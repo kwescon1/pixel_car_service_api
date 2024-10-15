@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# The container name for the app service
+# This variable stores the name of the Docker container where the Laravel application is running.
+APP_CONTAINER="carservice"
+APP_USER="ubuntu"
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Run PHP tests before pushing
+echo "Running tests before push..."
+docker exec -u $APP_USER $APP_CONTAINER php artisan test
+if [ $? -ne 0 ]; then
+  # Print error message in red
+  echo -e "${RED}Tests failed. Fix the issues before pushing.${NC}"
+  exit 1
+fi
+
+# Print success message in green
+echo -e "${GREEN}All tests passed. Proceeding with push.${NC}"
