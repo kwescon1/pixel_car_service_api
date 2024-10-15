@@ -19,3 +19,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
+/docker-files/cron
+/docker-files/nginx/certs
+/storage/logs/nginx
+/storage/dbdata
