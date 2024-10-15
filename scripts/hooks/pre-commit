@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# The container name for the app service
+# This variable stores the name of the Docker container where the Laravel application is running.
+APP_CONTAINER="carservice"
+APP_USER="ubuntu"
+
+# Step 1: Run PHP CodeSniffer for PSR-12 compliance
+# This checks if the PHP code follows the PSR-12 coding standard. We are executing this command
+# inside the Docker container using `docker exec`. The `composer run lint` command will run the
+# PHP CodeSniffer as defined in the composer.json file of the project.
+echo "Running PHP CodeSniffer for PSR-12 standards..."
+docker exec -u $APP_USER $APP_CONTAINER composer run lint
+if [ $? -ne 0 ]; then
+  # If the exit status of the last command is not zero, it means the linting failed.
+  # The script will print an error message and prevent the commit by exiting with a status of 1.
+  echo "PHP CodeSniffer failed. Fix the coding standard issues before committing."
+  exit 1
+fi
+
+# Step 2: Run PHPStan for static analysis
+# This command runs PHPStan, a static analysis tool, inside the Docker container.
+# PHPStan will check for potential issues in the PHP code (e.g., undefined variables, incorrect types).
+echo "Running PHPStan for static analysis..."
+docker exec -u $APP_USER $APP_CONTAINER composer run analyze
+if [ $? -ne 0 ]; then
+  # If the exit status of the PHPStan command is not zero, the analysis failed.
+  # The script will print an error message and stop the commit by exiting with status 1.
+  echo "PHPStan analysis failed. Please fix the issues before committing."
+  exit 1
+fi
+
+# Step 3: Run Security Check for vulnerabilities
+echo "Running security check..."
+docker exec -u $APP_USER $APP_CONTAINER composer run security-check
+if [ $? -ne 0 ]; then
+  echo "Security issues found. Please fix them before committing."
+  exit 1
+fi
+
+
+# If all checks pass, allow the commit to proceed
+echo "All checks passed. Proceeding with the commit."
