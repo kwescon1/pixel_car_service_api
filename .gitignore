@@ -23,3 +23,4 @@ yarn-error.log
 /docker-files/nginx/certs
 /storage/logs/nginx
 /storage/dbdata
+/storage/redis
