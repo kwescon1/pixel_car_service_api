@@ -1,66 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pixel Car Service Booking API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to the Pixel Car Service Booking API, the server-side component of the car service booking application. This backend is built with Laravel and provides RESTful APIs for managing car services, mechanics, and bookings. The backend is containerized using Docker, making it easy to set up and deploy alongside the separated frontend.
 
-## About Laravel
+## Project Structure
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```plaintext
+carservice_api/
+│
+├── docker-files/
+│   ├── nginx/
+│   │   ├── certs/             # SSL certificates (to be generated locally)
+│   │   └── ...
+│   └── ...
+├── docker-compose.yml         # Docker Compose file for orchestrating containers
+├── app/                       # Laravel application files
+├── docs/                      # Documentation for API routes and other functionalities
+│   ├── authentication/        # Authentication-related route documentation
+│   │   └── README.md          # Documentation for authentication-related routes
+|   └── ...
+├── .env.example               # Example environment configuration file
+├── README.md                  # This README file
+└── ...                        # Other related files
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    •	Docker: Ensure Docker is installed on your machine. Install Docker
+    •	Make: Install make to help manage commands for the API.
 
-## Learning Laravel
+## Setting Up the API Backend
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Step 1: SSL Certificate Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+To secure communication between the frontend and backend, you need to generate SSL certificates. We use mkcert for this purpose.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    1.	Install mkcert (if not already installed):
+    •	For macOS:
 
-## Laravel Sponsors
+brew install mkcert
+brew install nss # if you use Firefox
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    •	For Linux and Windows, follow the instructions at mkcert’s repository.
 
-### Premium Partners
+    2.	Generate a Local Certificate:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+mkcert -install
+mkcert localhost 127.0.0.1 ::1
 
-## Contributing
+    3.	Place the Generated Files:
+    •	Move the generated .pem and .key files to the ./car_service_api/docker-files/nginx/certs/ directory.
+    4.	Ensure Correct File Naming:
+    •	Ensure the file names match those specified in the Nginx configuration and Docker Compose file.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Example Nginx configuration:
 
-## Code of Conduct
+server {
+listen 443 ssl;
+server_name localhost;
+root /var/www/car_service_api/public;
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ssl_certificate /etc/nginx/certs/localhost.pem;
+    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
 
-## Security Vulnerabilities
+}
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Example Docker Compose file for SSL:
 
-## License
+car_service_webserver:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+volumes: - ./:/var/www/car_service_api - ./docker-files/nginx/certs/localhost.pem:/etc/nginx/certs/localhost.pem - ./docker-files/nginx/certs/localhost-key.pem:/etc/nginx/certs/localhost-key.pem
+
+Step 2: Environment Variables
+
+    1.	Copy the example .env file:
+
+cp .env.example .env
+
+    2.	Edit the .env file:
+    •	Open the .env file and configure the database connection and other relevant settings:
+
+DB_DATABASE=your_db_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+
+Step 3: Set Up and Run the API
+
+    1.	Build the Docker containers:
+
+make setup
+
+    2.	Start the containers:
+
+make up
+
+    3.	Install Laravel Dependencies:
+    •	Enter the container and run Composer install:
+
+make shell
+composer install
+
+    4.	Run Migrations:
+    •	Inside the container, run migrations to set up the database:
+
+php artisan migrate
+
+    5.	Run Tests:
+
+php artisan test
+
+    6.	Stop the API:
+
+make down
+
+API Functionality
+
+This API provides endpoints for managing car services, service types, mechanics, and bookings.
+
+Below are the key features:
+
+Authenticated Features (Admin-only CRUD)
+
+    1.	Car Services
+    •	Create, view, update, and delete car services (e.g., oil changes, tire rotations).
+    2.	Service Types
+    •	Group services into types like Full Service, Interim Service.
+    3.	Mechanics
+    •	Manage mechanics (e.g., name, availability).
+    4.	Booking Dates
+    •	Manage bookings made by users for services on specific dates.
+
+Unauthenticated Features (Public)
+
+    •	View Services: Users can view available services filtered by service type.
+    •	Select Date for Service: Users can view available dates for services.
+    •	View Mechanic Availability: Users can view mechanics available on selected dates.
+
+API Routes
+
+The API routes are organized as follows:
+
+    •	Authenticated Routes (for Admins):
+    •	CRUD routes for managing car services, service types, mechanics, and bookings.
+    •	Unauthenticated Routes (for Public Users):
+    •	Routes for viewing available services, mechanics, and making bookings.
+
+Communication with the Frontend
+
+The API communicates with the frontend through RESTful endpoints. Ensure that the frontend is configured to communicate with the backend at the appropriate URL (e.g., https://localhost:8894).
+
+API Route Documentation
+
+Detailed documentation of the API routes, including request formats and expected responses, can be found in the docs folder:
+
+    •	Car Services: docs/services/README.md
+    •	Service Types: docs/service-types/README.md
+    •	Mechanics: docs/mechanics/README.md
+    •	Bookings: docs/bookings/README.md
+
+Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
+
+For inquiries, suggestions, or support, please contact us at support@pixelcarservice.com
