@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Interfaces\Auth\AuthServiceInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Services\ServiceType\ServiceType;
 use App\Interfaces\ServiceType\ServiceTypeInterface;
+use App\Services\Auth\AuthService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
 class AppServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
 
 
         $this->app->bind(ServiceTypeInterface::class, ServiceType::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
     }
 
 
@@ -35,6 +38,6 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function provides(): array
     {
-        return [ServiceTypeInterface::class];
+        return [ServiceTypeInterface::class, AuthServiceInterface::class,];
     }
 }
