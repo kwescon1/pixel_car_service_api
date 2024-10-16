@@ -1,19 +1,21 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ServiceTypeController;
 
-// Resolve the routes singleton
-$routeNames = App::make('routeNames');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
-    //  // Accessing the singleton
+    // auth routes
 
-    // Route::post('/register', [AuthController::class, 'register'])
-    //     ->name($routeNames['register']);  // Defining route name dynamically
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('service-types', ServiceTypeController::class);
+    });
+
+    // guest routes
+
 });
