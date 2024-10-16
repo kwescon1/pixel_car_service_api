@@ -15,6 +15,7 @@ return [
 
     // Application general messages
     'operation_successful' => 'Operation successful!',
+    'resource_deleted' => 'Resource deleted!',
     'resource_created' => 'Resource created!',
     'resource_not_found' => 'Resource not found!',
     'validation_failed' => 'Validation failed!',
@@ -24,6 +25,19 @@ return [
     'service_type_created' => 'Service Type successfully created',
     'service_type_deleted' => 'Service Type successfully deleted',
     'service_types_retrieved' => 'Service Types successfully retrieved',
+    'service_type_retrieved' => 'Service Type successfully retrieved',
+    'service_type_id_required' => 'The service type is required',
+    'service_type_id_invalid' => 'Invalid service type',
+    'price_required' => 'The price is required',
+    'price_numeric' => 'The prcie must be numeric',
+
+
+    'car_service_name_unique' => 'This car service name is already taken. Please choose another one.',
+
+    'forbidden_access' => ' The requested resource is forbidden',
+
+    'login_successful' => 'Login successful!',
+    'login_successful_verify' => 'Login successful! Please verify account with OTP',
 
 
     // Add other messages if needed
