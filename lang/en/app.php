@@ -18,6 +18,13 @@ return [
     'resource_created' => 'Resource created!',
     'resource_not_found' => 'Resource not found!',
     'validation_failed' => 'Validation failed!',
+    'service_type_name_required' => 'The name of the service type is required.',
+    'service_name_unique' => 'This service type name is already taken. Please choose another one.',
+    'service_name_max_description' => 'The description cannot exceed 1000 characters.',
+    'service_type_created' => 'Service Type successfully created',
+    'service_type_deleted' => 'Service Type successfully deleted',
+    'service_types_retrieved' => 'Service Types successfully retrieved',
+
 
     // Add other messages if needed
 ];
