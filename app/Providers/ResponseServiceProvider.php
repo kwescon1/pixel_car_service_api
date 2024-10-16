@@ -45,6 +45,13 @@ class ResponseServiceProvider extends ServiceProvider
             ], Response::HTTP_NOT_FOUND);
         });
 
+        $response->macro('simpleError', function ($errorMessage, $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR) {
+
+            return response()->json([
+                'error' => $errorMessage,
+            ], $statusCode);
+        });
+
         $response->macro('error', function ($error, $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR) {
 
             // If the exception is a ValidationException, return the validation errors
