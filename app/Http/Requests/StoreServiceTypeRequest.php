@@ -13,9 +13,9 @@ class StoreServiceTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Check if the authenticated user has permission to create a service type
-        // return Auth::user() && Gate::allows('service-types');
-        return true;
+        // TODO later /// apply gates
+        // simple user auth check
+        return Auth::check() && Auth::user()->is_admin;
     }
 
     /**

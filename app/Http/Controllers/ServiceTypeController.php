@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreServiceTypeRequest;
+use App\Http\Requests\UpdateServiceTypeRequest;
 use App\Interfaces\ServiceType\ServiceTypeInterface;
 use App\Http\Resources\ServiceType\ServiceTypeResource;
 use App\Http\Resources\ServiceType\ServiceTypeResourceCollection;
@@ -23,6 +23,7 @@ class ServiceTypeController extends Controller
      */
     public function index()
     {
+
         $serviceTypes = $this->serviceType->getServiceTypes();
 
         return response()->success(__('app.service_types_retrieved'), new ServiceTypeResourceCollection($serviceTypes));
@@ -33,6 +34,7 @@ class ServiceTypeController extends Controller
      */
     public function store(StoreServiceTypeRequest $request)
     {
+
         $data = $request->validated();
 
         $serviceType = $this->serviceType->storeServiceType($data);
@@ -45,15 +47,19 @@ class ServiceTypeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->success(__('app.service_type_retrieved'), new ServiceTypeResource($this->serviceType->getServiceType($id)));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateServiceTypeRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+
+        $updatedType = $this->serviceType->updateServiceType($data, $id);
+
+        return response()->success(__('app.operation_successful'), new ServiceTypeResource($updatedType));
     }
 
     /**
@@ -61,6 +67,6 @@ class ServiceTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return response()->success(__('app.resource_deleted'), $this->serviceType->deleteServiceType($id));
     }
 }
