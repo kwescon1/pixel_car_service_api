@@ -9,7 +9,7 @@ trait HasUuid
     /**
      * Boot function to automatically generate UUIDs for a custom column (`uuid`).
      */
-    protected static function bootHasUuids(): void
+    protected static function bootHasUuid(): void
     {
         static::creating(function ($model) {
             // Check if the UUID column (`uuid`) is empty and generate a new UUID
