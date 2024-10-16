@@ -17,9 +17,8 @@ class AdminSeeder extends Seeder
         // Retrieve the admin password from the .env file
         $adminPassword = env('ADMIN_PASSWORD', 'default_password');
         // Create a new admin user
-        User::create([
+        User::firstOrCreate(['email' => 'admin@pixel.com'], [
             'name' => 'Pixel Admin',
-            'email' => 'admin@pixeltest.com',
             'password' => Hash::make($adminPassword), // Secure password
             'email_verified_at' => Carbon::now(), // Secure password
         ]);
