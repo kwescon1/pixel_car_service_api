@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('service_types', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->unique()->default(DB::raw('(UUID())'));
+            $table->uuid()->unique();
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
