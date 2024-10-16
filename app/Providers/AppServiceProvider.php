@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use App\Services\ServiceType\ServiceType;
+use App\Interfaces\ServiceType\ServiceTypeInterface;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 class AppServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -13,11 +15,10 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
     public function register(): void
     {
 
-        // Register route names as a singleton, making it globally accessible
-        $this->app->singleton('routeNames', function () {
-            return config('routes');
-        });
+
+        $this->app->bind(ServiceTypeInterface::class, ServiceType::class);
     }
+
 
     /**
      * Bootstrap any application services.
@@ -25,5 +26,15 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
     public function boot(): void
     {
         //
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array<int, string>
+     */
+    public function provides(): array
+    {
+        return [ServiceTypeInterface::class];
     }
 }
