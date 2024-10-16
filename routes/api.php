@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServiceTypeController;
@@ -17,5 +18,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // guest routes
-
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/login', 'login')->name('api.auth.login');
+    });
 });
