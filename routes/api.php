@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServiceTypeController;
@@ -14,7 +15,11 @@ Route::prefix('v1')->group(function () {
     // auth routes
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('service-types', ServiceTypeController::class);
+
+        Route::middleware('isAdmin')->group(function () {
+            Route::apiResource('service-types', ServiceTypeController::class);
+            Route::apiResource('car-services', CarServiceController::class);
+        });
     });
 
     // guest routes
