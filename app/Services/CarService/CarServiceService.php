@@ -52,6 +52,8 @@ class CarServiceService implements CarServiceInterface
     public function updateCarService(array $data, string $id): CarService
     {
 
+        $serviceType = ServiceType::findOrFail($data['service_type_id']);
+
         $carService = $this->getCarService($id);
 
         // Update the car service with the new data
