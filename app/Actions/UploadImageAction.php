@@ -14,14 +14,14 @@ class UploadImageAction
      * @param Mechanic $mechanic
      * @param UploadedFile|null $image
      */
-    public function execute(Mechanic $mechanic, ?UploadedFile $image): void
+    public function execute(Mechanic $mechanic, ?UploadedFile $image, bool $isUpdate = false): void
     {
         // Dispatch the job to process the image upload
         if ($image) {
             // Store the image temporarily in the 'mechanics' folder
             $filePath = $image->store('mechanics/tmp', 'public');
 
-            ProcessImage::dispatch($mechanic, $filePath);
+            ProcessImage::dispatch($mechanic, $filePath, $isUpdate);
         }
     }
 }
