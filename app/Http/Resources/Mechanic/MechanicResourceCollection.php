@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Mechanic;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class MechanicResourceCollection extends ResourceCollection
