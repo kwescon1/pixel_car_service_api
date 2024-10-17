@@ -47,6 +47,7 @@ class ResponseServiceProvider extends ServiceProvider
 
         $response->macro('simpleError', function ($errorMessage, $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR) {
 
+
             return response()->json([
                 'error' => $errorMessage,
             ], $statusCode);
@@ -62,10 +63,15 @@ class ResponseServiceProvider extends ServiceProvider
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
+            // Get the status code from the exception, if it has one, otherwise use the default
+            $responseCode = method_exists($error, 'getStatusCode')
+                ? $error->getStatusCode()
+                : $statusCode;
+
             // Default error handling
             return response()->json([
                 'error' => $error->getMessage(),
-            ], $statusCode);
+            ], $responseCode);
         });
     }
 }
