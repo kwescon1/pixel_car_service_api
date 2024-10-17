@@ -27,14 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->notfound($e->getMessage());
         });
 
-        $exceptions->renderable(function (AuthenticationException $e) {
-            return response()->error($e, Response::HTTP_UNAUTHORIZED);
-        });
-
-        $exceptions->renderable(function (AuthorizationException $e) {
-            return response()->error($e, Response::HTTP_FORBIDDEN);
-        });
-
         $exceptions->renderable(function (Exception $e) {
             Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
