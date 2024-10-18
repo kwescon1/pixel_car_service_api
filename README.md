@@ -110,13 +110,21 @@ To streamline the setup process, you can now use the `make setup` command, which
     composer install
     ```
 
-3. **View Logs**:
+3. **Run Tests in the shell**:
+
+    ```bash
+    php artisan test
+    ```
+
+    ![Test](./public/assets/tests.png)
+
+4. **View Logs**:
 
     ```bash
     make logs-api
     ```
 
-4. **Stop the API**:
+5. **Stop the API**:
 
     ```bash
     make down
