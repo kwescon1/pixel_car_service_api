@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         // Retrieve the admin password from the .env file
-        $adminPassword = env('ADMIN_SEED_PASSWORD', 'default_password');
+        $adminPassword = env('ADMIN_PASSWORD', 'default_password');
         $adminEmail = env('ADMIN_EMAIL', 'default_email');
 
         // Create a new admin user, password will be automatically hashed
