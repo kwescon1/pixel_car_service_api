@@ -74,6 +74,8 @@ class MechanicController extends Controller
     //  */
     public function destroy(string $id)
     {
-        return response()->success(__('app.resource_deleted'), $this->mechanicService->deleteMechanic($id));
+        $this->mechanicService->deleteMechanic($id);
+
+        return response()->noContent();
     }
 }
