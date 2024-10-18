@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('car_services', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique()->default(DB::raw('(UUID())'));
-            $table->string('name');
+            $table->string('name')->index();
             $table->text('description')->nullable();
             $table->foreignId('service_type_id')
                 ->constrained()

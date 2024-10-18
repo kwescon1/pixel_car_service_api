@@ -26,10 +26,19 @@ class Mechanic extends Model
     public function scopeAvailable(Builder $query, $date, $start_time, $end_time): Builder
     {
         return $query->whereHas('bookingDates', function ($q) use ($date, $start_time, $end_time) {
-            $q->whereDate($date)
-                ->wherePivot('is_available', true)
-                ->wherePivot('start_time', '<=', $start_time)
-                ->wherePivot('end_time', '>=', $end_time);
+            $q->whereDate('date', $date)
+                ->where('mechanic_availabilities.is_available', true)
+                ->where('mechanic_availabilities.start_time', '<=', $start_time)
+                ->where('mechanic_availabilities.end_time', '>=', $end_time);
+        });
+    }
+
+    public function scopeAvailableByDate(Builder $query, $date): Builder
+    {
+        return $query->whereHas('bookingDates', function ($q) use ($date) {
+            $q->where('is_active', true)
+                ->whereDate('date', $date)
+                ->where('mechanic_availabilities.is_available', true);
         });
     }
 

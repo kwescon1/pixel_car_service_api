@@ -13,4 +13,5 @@ interface MechanicServiceInterface
     public function getMechanics(): LengthAwarePaginator;
     public function getMechanic(string $id): Mechanic;
     public function updateMechanic(array $data, string $id, ?UploadedFile $file): Mechanic;
+    public function getAvailableMechanics(?string $date): ?LengthAwarePaginator;
 }

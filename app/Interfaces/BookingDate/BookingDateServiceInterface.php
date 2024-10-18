@@ -13,4 +13,5 @@ interface BookingDateServiceInterface
     public function getDate(string $id): BookingDate;
     public function updateDate(array $data, string $id): BookingDate;
     public function deleteDate(string $id): bool;
+    public function getAvailableDates(): LengthAwarePaginator;
 }

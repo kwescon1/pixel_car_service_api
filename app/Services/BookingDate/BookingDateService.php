@@ -54,4 +54,9 @@ class BookingDateService implements BookingDateServiceInterface
 
         return $date->delete();
     }
+
+    public function getAvailableDates(): LengthAwarePaginator
+    {
+        return BookingDate::active()->paginate(10);
+    }
 }

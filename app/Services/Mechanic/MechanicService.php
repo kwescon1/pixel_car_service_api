@@ -89,4 +89,9 @@ class MechanicService implements MechanicServiceInterface
             return $mechanic;
         });
     }
+
+    public function getAvailableMechanics(?string $date): ?LengthAwarePaginator
+    {
+        return Mechanic::active()->availableByDate($date)->paginate(10);
+    }
 }

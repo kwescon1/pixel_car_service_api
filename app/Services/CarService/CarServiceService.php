@@ -30,7 +30,7 @@ class CarServiceService implements CarServiceInterface
 
     public function getCarService(string $id): CarService
     {
-        $carService = CarService::with('serviceType')->whereUuid($id)->first();
+        $carService = CarService::with('serviceType')->where('uuid', $id)->first();
 
         if (!$carService) {
             throw new NotFoundHttpException(__('app.resource_not_found'));
@@ -61,5 +61,10 @@ class CarServiceService implements CarServiceInterface
 
         // Return the updated car service
         return $carService;
+    }
+
+    public function filterByServiceType(?string $type): LengthAwarePaginator
+    {
+        return CarService::filterByServiceType($type)->paginate(10);
     }
 }

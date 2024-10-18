@@ -13,4 +13,5 @@ interface CarServiceInterface
     public function getCarService(string $id): CarService;
     public function deleteCarService(string $id): bool;
     public function updateCarService(array $data, string $id): CarService;
+    public function filterByServiceType(?string $type): LengthAwarePaginator;
 }
