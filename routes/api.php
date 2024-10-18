@@ -21,10 +21,10 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('public')->group(function () {
         // Unauthenticated routes
-        Route::get('/service-types', [ServiceTypeController::class, 'index']); // Public access to service types
-        Route::get('/car-services', FilterServiceByTypeController::class);   // Public access to car services
-        Route::get('/available-dates', SelectAvailableDateController::class); // Public access to booking dates
-        Route::get('/mechanics', SelectAvailableMechanicController::class); // Public access to mechanics
+        Route::get('/service-types', [ServiceTypeController::class, 'index'])->name('public.service-types.index'); // Public access to service types
+        Route::get('/car-services', FilterServiceByTypeController::class)->name('public.car-services');   // Public access to car services
+        Route::get('/available-dates', SelectAvailableDateController::class)->name('public.available-dates'); // Public access to booking dates
+        Route::get('/mechanics', SelectAvailableMechanicController::class)->name('public.mechanics'); // Public access to mechanics
     });
 
     Route::middleware('auth:sanctum')->group(function () {
