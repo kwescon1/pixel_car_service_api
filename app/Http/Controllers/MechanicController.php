@@ -55,7 +55,7 @@ class MechanicController extends Controller
         return response()->success(__('app.operation_successful'), new MechanicResource($this->mechanicService->getMechanic($id)));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateMechanicRequest $request, string $id)
     {
 
         // Get the validated and sanitized data
