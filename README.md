@@ -1,8 +1,6 @@
-# Pixel Car Service Booking API
+# Pixel Car Service API
 
-Welcome to the Pixel Car Service Booking API, the server-side component of the car service booking application. This backend is built with Laravel and provides RESTful APIs for managing car services, mechanics, and bookings. The backend is containerized using Docker, making it easy to set up and deploy alongside the separated frontend.
-
-## Project Structure
+Welcome to the Car Service Booking API backend, the server-side component of the car service booking application. This backend is built with Laravel and provides RESTful APIs for managing car services, mechanics, and bookings. The backend is containerized using Docker, making it easy to set up and deploy alongside the separated frontend.
 
 ```plaintext
 carservice_api/
@@ -20,151 +18,153 @@ carservice_api/
 |   └── ...
 ├── .env.example               # Example environment configuration file
 ├── README.md                  # This README file
-└── ...                        # Other related files
+└── ...                        # Other backend-related files
 ```
 
 ## Prerequisites
 
-    •	Docker: Ensure Docker is installed on your machine. Install Docker
-    •	Make: Install make to help manage commands for the API.
+-   **Docker**: Ensure Docker is installed on your machine. [Install Docker](https://docs.docker.com/get-docker/)
+-   **Make**: Make sure you have `make` installed, as it will be used to manage commands for the API.
 
 ## Setting Up the API Backend
 
-Step 1: SSL Certificate Setup
+### Step 1: SSL Certificate Setup
 
-To secure communication between the frontend and backend, you need to generate SSL certificates. We use mkcert for this purpose.
+To secure communication between your frontend and backend, you need to generate SSL certificates. We use `mkcert` for this purpose.
 
-    1.	Install mkcert (if not already installed):
-    •	For macOS:
+-   Install `mkcert` (if not already installed):
 
-brew install mkcert
-brew install nss # if you use Firefox
+    -   For macOS:
 
-    •	For Linux and Windows, follow the instructions at mkcert’s repository.
+    ```bash
+    brew install mkcert
+    brew install nss # if you use Firefox
+    ```
 
-    2.	Generate a Local Certificate:
+    -   For Linux and Windows, follow the instructions at mkcert’s repository.
 
+-   Generate a local certificate
+
+```bash
 mkcert -install
 mkcert localhost 127.0.0.1 ::1
+```
 
-    3.	Place the Generated Files:
-    •	Move the generated .pem and .key files to the ./car_service_api/docker-files/nginx/certs/ directory.
-    4.	Ensure Correct File Naming:
-    •	Ensure the file names match those specified in the Nginx configuration and Docker Compose file.
+### Step 2: Environment Variables
 
-Example Nginx configuration:
+Before setting up the backend, configure the environment:
 
-server {
-listen 443 ssl;
-server_name localhost;
-root /var/www/car_service_api/public;
+1.  **Copy the example `.env` file**:
 
-    ssl_certificate /etc/nginx/certs/localhost.pem;
-    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
+    ```bash
+    cp .env.example .env
+    ```
 
-}
+2.  **Edit the `.env` file** to set database and other necessary configurations.
 
-Example Docker Compose file for SSL:
+    ```plaintext
+            DB_DATABASE=your_db
+            DB_USERNAME=your_username
+            DB_PASSWORD=your_password
+            MAIL_MAILER=smtp
 
-car_service_webserver:
+            MAIL_HOST=smtp.gmail.com
+            MAIL_PORT=465
+            MAIL_USERNAME=
+            MAIL_PASSWORD=
+            MAIL_ENCRYPTION=ssl
+            MAIL_FROM_ADDRESS=
+            MAIL_FROM_NAME="${APP_NAME}"
 
-volumes: - ./:/var/www/car_service_api - ./docker-files/nginx/certs/localhost.pem:/etc/nginx/certs/localhost.pem - ./docker-files/nginx/certs/localhost-key.pem:/etc/nginx/certs/localhost-key.pem
+    ```
 
-Step 2: Environment Variables
+### Step 3: Full Setup Process
 
-    1.	Copy the example .env file:
+To streamline the setup process, you can now use the `make setup` command, which combines building the API and setting up pre-commit hooks in one step.
 
-cp .env.example .env
+#### Full Setup:
 
-    2.	Edit the .env file:
-    •	Open the .env file and configure the database connection and other relevant settings:
+1. Run the following command to build the Docker container, install dependencies, and set up the pre-commit hooks:
 
-DB_DATABASE=your_db_name
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+    ```bash
+    make setup
+    ```
 
-Step 3: Set Up and Run the API
+    This command will:
 
-    1.	Build the Docker containers:
+    - Build the Docker container for the API.
+    - Install the pre-commit hook (used for running lint checks before commits).
 
-make setup
+#### Running the API
 
-    2.	Start the containers:
+1. **Start the API**:
 
-make up
+    ```bash
+    make up
+    ```
 
-    3.	Install Laravel Dependencies:
-    •	Enter the container and run Composer install:
+2. **Enter the API Shell and Install Dependencies**:
 
-make shell
-composer install
+    ```bash
+    make shell
+    composer install
+    ```
 
-    4.	Run Migrations:
-    •	Inside the container, run migrations to set up the database:
+3. **View Logs**:
 
-php artisan migrate
+    ```bash
+    make logs-api
+    ```
 
-    5.	Run Tests:
+4. **Stop the API**:
 
-php artisan test
+    ```bash
+    make down
+    ```
 
-    6.	Stop the API:
+This approach allows for cleaner code and makes route name updates easier by centralizing route name management.
 
-make down
+## Automated Code Checks on Push
 
-API Functionality
+To ensure that the codebase remains clean, consistent, and free from errors, we have automated several checks that run during the commit and push processes.
 
-This API provides endpoints for managing car services, service types, mechanics, and bookings.
+### Pre-Push Hook
 
-Below are the key features:
+Before pushing the code, the application’s test suite is automatically executed to ensure that all tests pass successfully:
 
-Authenticated Features (Admin-only CRUD)
+-   **Run Tests:** Ensures that all tests pass before allowing the push to proceed.
 
-    1.	Car Services
-    •	Create, view, update, and delete car services (e.g., oil changes, tire rotations).
-    2.	Service Types
-    •	Group services into types like Full Service, Interim Service.
-    3.	Mechanics
-    •	Manage mechanics (e.g., name, availability).
-    4.	Booking Dates
-    •	Manage bookings made by users for services on specific dates.
+These checks are put in place to help maintain code quality, catch potential issues early, and ensure that error-prone code is not pushed to the repository.
 
-Unauthenticated Features (Public)
+## Communication with the Frontend
 
-    •	View Services: Users can view available services filtered by service type.
-    •	Select Date for Service: Users can view available dates for services.
-    •	View Mechanic Availability: Users can view mechanics available on selected dates.
+The API provides RESTful endpoints that the frontend interacts with. Ensure that the frontend app is configured to communicate with the backend API, typically at `https://localhost:8894`.
 
-API Routes
+## Route Documentation
 
-The API routes are organized as follows:
+All API routes are documented in the `docs` folder. [Routes Documentation](docs/routes)
 
-    •	Authenticated Routes (for Admins):
-    •	CRUD routes for managing car services, service types, mechanics, and bookings.
-    •	Unauthenticated Routes (for Public Users):
-    •	Routes for viewing available services, mechanics, and making bookings.
+## Additional Commands
 
-Communication with the Frontend
+### Makefile Commands for the API
 
-The API communicates with the frontend through RESTful endpoints. Ensure that the frontend is configured to communicate with the backend at the appropriate URL (e.g., https://localhost:8894).
+-   **setup**: Build the docker containers and set up pre-commit hooks.
+-   **up**: Start the containers in detached mode.
+-   **down**: Stop and remove the Docker containers.
+-   **logs-api**: View real-time logs from the containers.
+-   **shell**: Access the carservice container shell.
+-   **lint**: Run PHP CodeSniffer for PSR-12 code standard checks.
+-   **lint-fix**: Fix linting issues automatically.
+-   **analyze**: Run static analysis using PHPStan.
 
-API Route Documentation
+## Contributing
 
-Detailed documentation of the API routes, including request formats and expected responses, can be found in the docs folder:
+Contributions are welcome! Please fork the repository and submit a pull request. Make sure to follow the code style guidelines and provide clear commit messages.
 
-    •	Car Services: docs/services/README.md
-    •	Service Types: docs/service-types/README.md
-    •	Mechanics: docs/mechanics/README.md
-    •	Bookings: docs/bookings/README.md
+## License
 
-Contributing
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Contributions are welcome! Please fork the repository and submit a pull request.
+## Contact
 
-License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Contact
-
-For inquiries, suggestions, or support, please contact us at support@pixelcarservice.com
+For inquiries, suggestions, or support, please reach out to us at support@pixelcarservice.com
