@@ -67,6 +67,7 @@ class ServiceTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        return response()->success(__('app.resource_deleted'), $this->serviceType->deleteServiceType($id));
+        $this->serviceType->deleteServiceType($id);
+        return response()->noContent();
     }
 }
