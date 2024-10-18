@@ -75,6 +75,8 @@ Before setting up the backend, configure the environment:
             MAIL_ENCRYPTION=ssl
             MAIL_FROM_ADDRESS=
             MAIL_FROM_NAME="${APP_NAME}"
+            ADMIN_SEED_PASSWORD=
+            ADMIN_EMAIL=
 
     ```
 
