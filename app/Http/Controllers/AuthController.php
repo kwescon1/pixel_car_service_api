@@ -36,11 +36,12 @@ class AuthController extends Controller
 
         $results = $this->authService->login($user);
 
+
         $userResource = new UserResource($results['user']);
         $token = $results['token'];
 
         return response()->success(
-            $user->email_verified_at ? __('app.login_successful') : __('app.login_successful_verify'),
+            __('app.login_successful'),
             [
                 'user' => $userResource,
                 'token' => $token
