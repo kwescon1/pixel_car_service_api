@@ -76,6 +76,7 @@ class CarServiceController extends Controller
     //  */
     public function destroy(string $id)
     {
-        return response()->success(__('app.resource_deleted'), $this->carService->deleteCarService($id));
+        $this->carService->deleteCarService($id);
+        return response()->noContent();
     }
 }
