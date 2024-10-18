@@ -48,7 +48,7 @@ For mechanics, the system allows for image uploads (e.g., profile pictures). I i
 2. Transactional Integrity: Database operations, such as adding or updating mechanics, are wrapped in database transactions to ensure data consistency. This prevents partial updates in case of failures during operations.
 3. Email Notifications and Image Processing: To ensure responsiveness, both notifications and image processing are handled asynchronously through job queues. This prevents the API from being blocked by time-consuming tasks such as sending emails or processing images.
 
-Database Structure
+## Database Structure
 
 The system’s database includes the following models:
 
@@ -67,7 +67,7 @@ I ensured that the system is well-tested by writing comprehensive feature tests 
 -   Verifying that the public routes return the correct data for unauthenticated users.
 -   Ensuring that image uploads and optimizations are handled correctly for mechanics.
 
-Future Considerations
+## Future Considerations
 
 1. Mechanic Login: Currently, mechanics do not have the ability to log in and manage their availability. In the future, this could be enhanced to allow mechanics to log in and control their schedules. This would decentralize the admin’s control and give mechanics more autonomy.
 2. Caching for Performance: Introducing caching (e.g., Redis) for frequently accessed resources like service types, services, and mechanics would improve response times and reduce database load, especially for unauthenticated routes.
