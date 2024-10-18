@@ -74,6 +74,7 @@ class BookingDateController extends Controller
     public function destroy(string $id)
     {
         //
-        return response()->success(__('app.resource_deleted'), $this->bookingDateService->deleteDate($id));
+        $this->bookingDateService->deleteDate($id);
+        return response()->noContent();
     }
 }
