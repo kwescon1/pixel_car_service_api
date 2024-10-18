@@ -30,6 +30,7 @@ return [
     'service_type_id_invalid' => 'Invalid service type',
     'price_required' => 'The price is required',
     'price_numeric' => 'The prcie must be numeric',
+    'car_service_name_required' => 'The name of the car service is required',
 
 
     'car_service_name_unique' => 'This car service name is already taken. Please choose another one.',
