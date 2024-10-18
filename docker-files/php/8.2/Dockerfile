@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     libbz2-dev \
     libfreetype6-dev \
     libicu-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng-dev \
     libreadline-dev \
@@ -33,8 +33,12 @@ RUN apt-get update && apt-get install -y \
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install exif pcntl bcmath gd pdo pdo_mysql pdo_sqlite sockets
+# Install PHP extensions, specifically enabling GD with JPEG and PNG
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install gd
+
+# Install other PHP extensions
+RUN docker-php-ext-install exif pcntl bcmath pdo pdo_mysql pdo_sqlite sockets
 
 # Install Redis extensions
 RUN pecl install redis \
