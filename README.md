@@ -167,6 +167,10 @@ All API routes are documented in the `docs` folder. [Routes Documentation](docs/
 -   **lint-fix**: Fix linting issues automatically.
 -   **analyze**: Run static analysis using PHPStan.
 
+## Further Explanation
+
+For a detailed overview of the system, including my understanding of the requirements, design decisions, and future considerations, please refer to the Explanation.md file.[Further Explanaition](docs/explanaition/explanaition.md)
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request. Make sure to follow the code style guidelines and provide clear commit messages.
