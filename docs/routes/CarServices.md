@@ -121,7 +121,7 @@ Payload Example
 }
 ```
 
-Success Response
+Created Response (201)
 
 ```json
 {
