@@ -26,11 +26,41 @@ class ProcessImage implements ShouldQueue
      * @param string $filePath
      * @param bool $isUpdate
      */
-    public function __construct(Mechanic $mechanic, string $filePath, bool $isUpdate = false)
+    public function __construct(?Mechanic $mechanic, string $filePath, bool $isUpdate = false)
     {
         $this->mechanic = $mechanic;
         $this->filePath = $filePath;
         $this->isUpdate = $isUpdate; // Flag to indicate if this is an update
+    }
+
+    /**
+     * Getter for mechanic.
+     *
+     * @return Mechanic
+     */
+    public function getMechanic(): Mechanic
+    {
+        return $this->mechanic;
+    }
+
+    /**
+     * Getter for filePath.
+     *
+     * @return string
+     */
+    public function getFilePath(): string
+    {
+        return $this->filePath;
+    }
+
+    /**
+     * Getter for isUpdate.
+     *
+     * @return bool
+     */
+    public function isUpdate(): bool
+    {
+        return $this->isUpdate;
     }
 
     /**
@@ -39,7 +69,7 @@ class ProcessImage implements ShouldQueue
     public function handle(): void
     {
         // If it's an update and the mechanic already has an avatar, delete the old image
-        if ($this->isUpdate && $this->mechanic->avatar) {
+        if ($this->isUpdate() && $this->mechanic->avatar) {
             Storage::disk('public')->delete($this->mechanic->avatar);
         }
 
@@ -51,10 +81,10 @@ class ProcessImage implements ShouldQueue
         $optimizerChain->optimize($absoluteFilePath);
 
         // Define the permanent location (e.g., 'mechanics' folder)
-        $finalPath = str_replace('tmp/', '', $this->filePath);
+        $finalPath = str_replace('tmp/', '', $this->getFilePath());
 
         // Move the optimized image to the permanent location
-        Storage::disk('public')->move($this->filePath, $finalPath);
+        Storage::disk('public')->move($this->getFilePath(), $finalPath);
 
         // Update the mechanic's avatar field with the new file's URL
         $this->mechanic->update([
