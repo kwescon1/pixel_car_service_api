@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateCarServiceRequest extends FormRequest
 {
@@ -25,8 +24,6 @@ class UpdateCarServiceRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Get the CarService id from the route (assuming {car_service} is used as the route parameter)
-        $carServiceId = $this->route('car_service');
 
         return [
             'name' => [
@@ -36,15 +33,12 @@ class UpdateCarServiceRequest extends FormRequest
                 Rule::unique('car_services', 'name')->ignore($this->route('car_service'), 'uuid')
             ],
             'description' => 'nullable|string|max:1000',
+            'price' => 'required|numeric|min:0',
+
             'service_type_id' => [
                 'required',
-                'integer',
-                'exists:service_types,id',
-            ],
-            'price' => [
-                'required',
-                'numeric',
-                'min:1',
+                'uuid',
+                Rule::exists('service_types', 'uuid'),
             ],
         ];
     }
@@ -57,7 +51,7 @@ class UpdateCarServiceRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('app.service_type_name_required'),
+            'name.required' => __('app.car_service_name_required'),
             'name.unique' => __('app.car_service_name_unique'),
             'description.max' => __('app.service_name_max_description'),
             'service_type_id.required' => __('app.service_type_id_required'),
@@ -74,6 +68,8 @@ class UpdateCarServiceRequest extends FormRequest
     {
         // Sanitize the inputs before validation
         $this->merge($this->sanitize());
+
+        logger()->info('UpdateCarServiceRequest Data:', $this->all());
     }
 
     /**
@@ -87,5 +83,13 @@ class UpdateCarServiceRequest extends FormRequest
             'name' => ucfirst(trim($this->input('name'))),
             'description' => trim($this->input('description')),
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        logger()->error('Validation failed:', $validator->errors()->toArray());
+        logger()->info('Request data:', $this->all());
+
+        parent::failedValidation($validator);
     }
 }
