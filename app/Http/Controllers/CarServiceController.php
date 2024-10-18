@@ -11,7 +11,6 @@ use App\Http\Resources\CarService\CarServiceResourceCollection;
 
 class CarServiceController extends Controller
 {
-
     protected $carService;
 
     public function __construct(CarServiceInterface $carService)

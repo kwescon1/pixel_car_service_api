@@ -38,7 +38,7 @@ class WelcomeMechanicNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Welcome to Pixel Car Service')
             ->greeting('Hello ' . $this->mechanic->name . ',')
             ->line('Welcome to our platform! We are excited to have you on board.')

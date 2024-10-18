@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\StoreMechanicRequest;
 use App\Http\Requests\UpdateMechanicRequest;
 use App\Http\Resources\Mechanic\MechanicResource;
@@ -12,7 +11,6 @@ use Illuminate\Http\Request;
 
 class MechanicController extends Controller
 {
-
     protected $mechanicService;
     /**
      * Create a new class instance.

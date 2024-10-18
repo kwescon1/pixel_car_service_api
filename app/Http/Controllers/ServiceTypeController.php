@@ -10,7 +10,6 @@ use App\Http\Resources\ServiceType\ServiceTypeResourceCollection;
 
 class ServiceTypeController extends Controller
 {
-
     protected $serviceType;
 
     public function __construct(ServiceTypeInterface $serviceType)

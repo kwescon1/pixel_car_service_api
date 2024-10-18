@@ -7,7 +7,6 @@ use App\Interfaces\Auth\AuthServiceInterface;
 
 class AuthService implements AuthServiceInterface
 {
-
     /**
      * Login an existing user and generate an authentication token.
      *

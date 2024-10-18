@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 
-
 class UpdateMechanicRequest extends BaseMechanicRequest
 {
     /**

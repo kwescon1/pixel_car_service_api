@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class BookingDateController extends Controller
 {
-
     protected $bookingDateService;
     /**
      * constructor class

@@ -2,11 +2,9 @@
 
 namespace App\Services\CarService;
 
-
 use App\Models\CarService;
 use App\Models\ServiceType;
 use Illuminate\Pagination\LengthAwarePaginator;
-
 use App\Interfaces\CarService\CarServiceInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -15,7 +13,9 @@ class CarServiceService implements CarServiceInterface
     /**
      * Create a new class instance.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function storeCarService(array $data, ServiceType $serviceType): CarService
     {

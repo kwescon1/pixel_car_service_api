@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\LoginUserRequest;
 use App\Interfaces\Auth\AuthServiceInterface;
-
 
 class AuthController extends Controller
 {
