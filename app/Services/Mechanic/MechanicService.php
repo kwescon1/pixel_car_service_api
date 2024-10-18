@@ -83,9 +83,6 @@ class MechanicService implements MechanicServiceInterface
                 $this->uploadImageAction->execute($mechanic, $file, true);
             }
 
-
-
-
             return $mechanic;
         });
     }
