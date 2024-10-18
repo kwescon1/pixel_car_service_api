@@ -43,14 +43,12 @@
             "@php artisan package:discover --ansi"
         ],
         "post-install-cmd": [
-            "@php -r \"if (!file_exists('.git/hooks/pre-commit')) { copy('scripts/hooks/pre-commit', '.git/hooks/pre-commit') && chmod('.git/hooks/pre-commit', 0755); echo 'Pre-commit hook copied successfully.\n'; }\"",
             "@php -r \"if (!file_exists('.git/hooks/pre-push')) { copy('scripts/hooks/pre-push', '.git/hooks/pre-push') && chmod('.git/hooks/pre-push', 0755); echo 'Pre-push hook copied successfully.\n'; }\""
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
-            "@php -r \"if (!file_exists('.git/hooks/pre-commit')) { copy('scripts/hooks/pre-commit', '.git/hooks/pre-commit') && chmod('.git/hooks/pre-commit', 0755); echo 'Pre-commit hook copied successfully.\n'; }\"",
             "@php -r \"if (!file_exists('.git/hooks/pre-push')) { copy('scripts/hooks/pre-push', '.git/hooks/pre-push') && chmod('.git/hooks/pre-push', 0755); echo 'Pre-push hook copied successfully.\n'; }\"",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
