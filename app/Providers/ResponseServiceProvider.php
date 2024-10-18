@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Routing\ResponseFactory;
@@ -61,6 +62,13 @@ class ResponseServiceProvider extends ServiceProvider
                     'message' => __('app.validation_failed'),
                     'errors' => $error->errors(),
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            if ($error instanceof AuthenticationException) {
+                return response()->json([
+
+                    'error' => $error->getMessage(),
+                ], Response::HTTP_UNAUTHORIZED);
             }
 
             // Get the status code from the exception, if it has one, otherwise use the default
